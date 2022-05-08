@@ -41,7 +41,6 @@ public class HabrCareerParse {
                 String vacancyName = titleElement.text();
                 String link = String.format("%s%s", SOURCE_LINK, linkElement.attr("href"));
                 String description = habrCareerParse.retrieveDescription(link);
-                //  System.out.printf("%s %s %s %s%n", vacancyName, link, description, dateTimeElement.attr("datetime"));
                 System.out.println("Название вакансии : " + vacancyName
                         + "\n" + "Дата : " + dateTimeElement.attr("datetime")
                         + "\n" + "Ссылка : " + link
