@@ -40,6 +40,7 @@ public class HabrCareerParse implements Parse {
 
     /**
      * Метод создает объект Post с заполненными полями
+     *
      * @param row элемент вакансии типа Element
      * @return возваращает объект типа Post
      */
@@ -55,25 +56,30 @@ public class HabrCareerParse implements Parse {
 
     /**
      * Метод list загружает список всех постов
+     *
      * @param link ссылка на страницу для парсинга
      * @return возвращает список объектов типа Post
      * @throws IOException
      */
     @Override
-    public List<Post> list(String link) throws IOException {
+    public List<Post> list(String link) {
         List<Post> postsList = new ArrayList<>();
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 1; i <= 1; i++) {
             Connection connection = Jsoup.connect(link + "?page=" + i);
-            Document document = connection.get();
-            Elements rows = document.select(".vacancy-card__inner");
-            for (Element row : rows) {
-                postsList.add(getPost(row));
+            try {
+                Document document = connection.get();
+                Elements rows = document.select(".vacancy-card__inner");
+                for (Element row : rows) {
+                    postsList.add(getPost(row));
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
         return postsList;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         HarbCareerDateTimeParser parser = new HarbCareerDateTimeParser();
         HabrCareerParse hcp = new HabrCareerParse(parser);
         List<Post> list = hcp.list(PAGE_LINK);
