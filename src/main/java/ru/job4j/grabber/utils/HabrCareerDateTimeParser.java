@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import static java.time.format.DateTimeFormatter.ISO_DATE_TIME;
 
-public class HarbCareerDateTimeParser implements DateTimeParser {
+public class HabrCareerDateTimeParser implements DateTimeParser {
     /**
      *  Метод, преобразующий дату из формата career.habr.com
      *  в формат LocalDateTime
