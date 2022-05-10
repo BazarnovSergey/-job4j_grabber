@@ -9,9 +9,11 @@ import ru.job4j.grabber.utils.DateTimeParser;
 import ru.job4j.grabber.utils.HarbCareerDateTimeParser;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 public class HabrCareerParse implements Parse {
 
@@ -64,7 +66,7 @@ public class HabrCareerParse implements Parse {
     @Override
     public List<Post> list(String link) {
         List<Post> postsList = new ArrayList<>();
-        for (int i = 1; i <= 1; i++) {
+        for (int i = 5; i <= 5; i++) {
             Connection connection = Jsoup.connect(link + "?page=" + i);
             try {
                 Document document = connection.get();
@@ -83,8 +85,19 @@ public class HabrCareerParse implements Parse {
         HarbCareerDateTimeParser parser = new HarbCareerDateTimeParser();
         HabrCareerParse hcp = new HabrCareerParse(parser);
         List<Post> list = hcp.list(PAGE_LINK);
-        for (Post post : list) {
-            System.out.println(post.toString());
+        try (InputStream in = HabrCareerParse.class.getClassLoader()
+                .getResourceAsStream("grabber.properties")) {
+            Properties config = new Properties();
+            config.load(in);
+            PsqlStore psqlStore = new PsqlStore(config);
+            for (Post post : list) {
+                psqlStore.save(post);
+            }
+            System.out.println(psqlStore.findById(5).toString());
+            System.out.println(psqlStore.getAll().toString());
+
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
